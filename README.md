@@ -20,3 +20,5 @@ https://golang.hateblo.jp/entry/2019/10/07/171630
 ## Todo
 - [ ] format
 - [ ] all zone 
+- [ ] local differ
+- [ ] error 

@@ -12,7 +12,7 @@ func main() {
 	// Local
 	fmt.Println(now.Format(timeformat), "\t:", now.Location())
 
-	for _, l := range []string{"Pacific/Auckland", "Asia/Tokyo"} {
+	for _, l := range []string{"Pacific/Auckland", "Asia/Tokyo", "US/Central"} {
 		loc, _ := time.LoadLocation(l)
 		nowloc := now.In(loc)
 		fmt.Println(nowloc.Format(timeformat), "\t:", loc)
