@@ -1,13 +1,23 @@
 #!/bin/bash
 
-zoneurl=https://data.iana.org/time-zones/tzdb-2019c/zone.tab
+## Todo:
+# - [ ] echo convert headirect(eof)
+# - [ ] tihis shell conver to golang
+
+zone_url=https://data.iana.org/time-zones/tzdb/zone.tab
+zone_version_url=https://data.iana.org/time-zones/tzdb/version
+
 tmpfile="./tz.tmp"
 jsonfile="./tz.json"
 : > "${jsonfile}"
 
-curl -s -o "${tmpfile}" "${zoneurl}"
+curl -s -o "${tmpfile}" "${zone_url}"
 
-echo "[" > "${jsonfile}"
+head(){
+    echo "{" 
+    echo "  \"version\":\"$(curl -s ${zone_version_url})\","
+    echo "  \"timezones\":["
+}
 
 main(){
     egrep -v \# "${tmpfile}" | while read line;do
@@ -30,13 +40,22 @@ main(){
     done
 }
 
+lastlist(){
+    lastline=$(tail -1 "${jsonfile}")
+    lastline_sed=$(tail -1 "${jsonfile}" | sed -e "s|,$||")
+    sed -i "" -e "s|${lastline}|${lastline_sed}|" "${jsonfile}"
+}
+
+foot(){
+    echo "  ]"
+    echo "}"
+}
+
+## exec
+head >> "${jsonfile}"
 main >> "${jsonfile}"
-
-lastline=$(tail -1 "${jsonfile}")
-lastline_sed=$(tail -1 "${jsonfile}" | sed -e "s|,$||")
-sed -i "" -e "s|${lastline}|${lastline_sed}|" "${jsonfile}"
-
-echo "]" >> "${jsonfile}"
+lastlist
+foot >> "${jsonfile}"
 
 #cat "${jsonfile}"
 rm "${tmpfile}"

@@ -12,6 +12,12 @@ https://ema-hiro.hatenablog.com/entry/20170713/1499955533
 for range
 https://golang.hateblo.jp/entry/2019/10/07/171630
 
+
+
+
+
+https://mholt.github.io/json-to-go/
+
 ## memo
 - zone file
   - ${GOROOT}/lib/time/zoneinfo.zip
