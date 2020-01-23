@@ -28,3 +28,9 @@ https://mholt.github.io/json-to-go/
 - [ ] all zone 
 - [ ] local differ
 - [ ] error 
+
+
+
+------------
+## github actions
+https://stackoverflow.com/questions/57921401/push-to-origin-from-github-action
