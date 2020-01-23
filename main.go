@@ -4,19 +4,20 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
+	"log"
+	"net/http"
 	"time"
 )
 
 type result struct {
 	version   string `json:"version"`
 	Timezones []struct {
-		REGION      string `json:"region"`
-		ZONE1       string `json:"zone_1"`
-		ZONE2       string `json:"zone_2"`
-		CODE        string `json:"code"`
-		TZ          string `json:"tz"`
-		COORDINATES string `json:"coordinates"`
+		//	REGION      string `json:"region"`       //no use
+		//	ZONE1       string `json:"zone1"`        //no use
+		//	ZONE2       string `json:"zone2"`        //no use
+		//	CODE        string `json:"code"`         //no use
+		TZ string `json:"tz"`
+		//	COORDINATES string `json:"coordinates"`  //no use
 	} `json:"timezones"`
 }
 
@@ -31,18 +32,21 @@ func main() {
 	gmt, _ := time.LoadLocation("Europe/London")
 	nowgmt := now.In(gmt)
 	fmt.Println(nowgmt.Format(timeformat), "\t:", gmt)
-	fmt.Println("-----------------------------------------------------")
+	fmt.Printf("%v\n", "--------------------------------------------------------")
 
-	// i18n: json read
-	raw, err := ioutil.ReadFile("./tz.json")
+	// i18n: json get
+	resp, err := http.Get("https://m120.github.io/testsite/tz.json")
 	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	bytes := []byte(raw)
+	respbody, err := ioutil.ReadAll(resp.Body)
 	var tzd result
-	json.Unmarshal(bytes, &tzd)
+	json.Unmarshal(respbody, &tzd)
 
 	for _, tzs := range tzd.Timezones {
 		loc, _ := time.LoadLocation(tzs.TZ)
