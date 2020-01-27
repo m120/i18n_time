@@ -35,7 +35,7 @@ func main() {
 	fmt.Printf("%v\n", "--------------------------------------------------------")
 
 	// i18n: json get
-	resp, err := http.Get("https://m120.github.io/testsite/tz.json")
+	resp, err := http.Get("https://m120.github.io/timezone-json/timezone.json")
 	if err != nil {
 		log.Fatal(err)
 	}
