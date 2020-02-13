@@ -11,85 +11,95 @@ import (
 	"time"
 )
 
+var now = time.Now()
+var timeformat = time.RFC1123
+var timejsonurl = "https://m120.github.io/timezone-json/timezone.json"
+
 type result struct {
-	//version   string `json:"version"` //no use
 	Timezones []struct {
-		//	REGION      string `json:"region"`       //no use
-		//	ZONE1       string `json:"zone1"`        //no use
-		//	ZONE2       string `json:"zone2"`        //no use
-		//	CODE        string `json:"code"`         //no use
 		TZ string `json:"tz"`
-		//	COORDINATES string `json:"coordinates"`  //no use
 	} `json:"timezones"`
 }
 
-// reference from: https://golang.hateblo.jp/entry/2018/10/22/080000
-// https://program.sakaiboz.com/golang/standard-package/flag-commandline/
-//https://qiita.com/nightswinger/items/8abc3ee7db41a3365784
 func flagUsage() {
 	usageText := `
-  timezone i18n
+  i18n timezone
   
   Usage:
-  ----
-  default(no arg):	local and GMT(Europe/London)
-  i18n:				World Timezone List
-  help:				this message
-  `
+  -------------------------------------------
+  $ go run main.go (default(no arg))
+	"Local & GMT(Europe/London)"
+	 
+  $ go run main.go i18n
+	World Timezone List
+	  
+  $ go run main.go "{TZ}"
+	Specified Timezone 
 
+	ex: America/Chicago
+	  $ go run main.go America/Chicago
+
+  $ go run main.go help
+	This message. :-)
+  `
 	fmt.Fprintf(os.Stderr, "%s\n\n", usageText)
 }
 
-func localgmt() {
-	now := time.Now()
-	timeformat := time.RFC1123
-
-	// Local
+func localtime() {
 	fmt.Println(now.Format(timeformat), "\t:", now.Location())
+}
 
-	// GMT(UTC)
-	gmt, _ := time.LoadLocation("Europe/London")
-	nowgmt := now.In(gmt)
-	fmt.Println(nowgmt.Format(timeformat), "\t:", gmt)
+func loadlocation(tz string) {
+	loc, _ := time.LoadLocation(tz)
+	nowloc := now.In(loc)
+	fmt.Println(nowloc.Format(timeformat), "\t:", loc)
+}
 
+func tz(x string) {
+	switch x {
+	case "localgmt":
+		// Local
+		localtime()
+
+		// GMT(UTC)
+		loadlocation("Europe/London")
+	case "i18n":
+		// i18n: json get
+		resp, err := http.Get(timejsonurl)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer resp.Body.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		respbody, err := ioutil.ReadAll(resp.Body)
+		var tzd result
+		json.Unmarshal(respbody, &tzd)
+
+		for _, tzs := range tzd.Timezones {
+			loadlocation(tzs.TZ)
+		}
+	default:
+		localtime()
+		loadlocation(x)
+	}
 }
 
 func main() {
 	flag.Usage = flagUsage
-
-	now := time.Now()
-	timeformat := time.RFC1123
-
 	if len(os.Args) > 1 {
 		osargs := os.Args[1]
-
 		switch osargs {
 		case "i18n":
-			// i18n: json get
-			resp, err := http.Get("https://m120.github.io/timezone-json/timezone.json")
-			if err != nil {
-				log.Fatal(err)
-			}
-			defer resp.Body.Close()
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			respbody, err := ioutil.ReadAll(resp.Body)
-			var tzd result
-			json.Unmarshal(respbody, &tzd)
-
-			for _, tzs := range tzd.Timezones {
-				loc, _ := time.LoadLocation(tzs.TZ)
-				nowloc := now.In(loc)
-				fmt.Println(nowloc.Format(timeformat), "\t:", loc)
-			}
+			tz("i18n")
 		case "help":
 			flag.Usage()
 		default:
-			flag.Usage()
+			tz(osargs)
 		}
 	} else {
-		localgmt()
+		tz("localgmt")
 	}
 }
