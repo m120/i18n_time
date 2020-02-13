@@ -1,36 +1,41 @@
+# i18n-time
 
-Current time 
-https://www.golangprograms.com/how-to-get-the-current-date-and-time-with-timestamp-in-local-and-other-timezones.html
+## Whats is this...
+- Displays the current Local time & GMT(UTC) time. 
+- World current time
+- Specified Timezone current time
 
-https://www.evergreeninnovations.co/blog-working-with-package-time-in-go/
+## How to use.
+- Default(No ARG): "Local & GMT"
+  ```Shell
+    $ go run main.go
+    Thu, 13 Feb 2020 23:47:58 JST   : Local
+    Thu, 13 Feb 2020 14:47:58 GMT   : Europe/London
+  ```
 
+- i18n: World Timezone List
+  ```Shell
+    $ go run main.go i18n
+    Thu, 13 Feb 2020 15:52:01 CET   : Europe/Andorra
+    Thu, 13 Feb 2020 18:52:01 +04   : Asia/Dubai
+    - snip -
+    Thu, 13 Feb 2020 16:52:01 SAST  : Africa/Johannesburg
+    Thu, 13 Feb 2020 16:52:01 CAT   : Africa/Lusaka
+    Thu, 13 Feb 2020 16:52:01 CAT   : Africa/Harare
+  ```
 
-timeformat
-https://ema-hiro.hatenablog.com/entry/20170713/1499955533
+- "{TZ}": Specified Timezone 
+  ```Shell
+    $ go run main.go "{TZ}"
+  ```
+  - Ex: "America/Chicago"
+    ```Shell
+      $ go run main.go America/Chicago
+      Thu, 13 Feb 2020 23:55:38 JST   : Local
+      Thu, 13 Feb 2020 08:55:38 CST   : America/Chicago
+    ```
 
-
-for range
-https://golang.hateblo.jp/entry/2019/10/07/171630
-
-
-
-
-
-https://mholt.github.io/json-to-go/
-
-## memo
-- zone file
-  - ${GOROOT}/lib/time/zoneinfo.zip
-    - /usr/local/Cellar/go/1.13.5/libexec/lib/time/zoneinfo.zip
-
-## Todo
-- [ ] format
-- [ ] all zone 
-- [ ] local differ
-- [ ] error 
-
-
-
-------------
-## github actions
-https://stackoverflow.com/questions/57921401/push-to-origin-from-github-action
+- help: This message. :-)
+  ```Shell
+    $ go run main.go help
+  ```

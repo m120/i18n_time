@@ -27,20 +27,21 @@ func flagUsage() {
   
   Usage:
   -------------------------------------------
-  $ go run main.go (default(no arg))
-	"Local & GMT(Europe/London)"
-	 
+  - Default(No ARG): "Local & GMT"
+  $ go run main.go
+
+  - i18n: World Timezone List
   $ go run main.go i18n
-	World Timezone List
-	  
+	
+  - "{TZ}": Specified Timezone 
   $ go run main.go "{TZ}"
-	Specified Timezone 
+	
+    - Ex: "America/Chicago"
+      $ go run main.go America/Chicago
 
-	ex: America/Chicago
-	  $ go run main.go America/Chicago
-
+  - help: This message. :-)
   $ go run main.go help
-	This message. :-)
+	
   `
 	fmt.Fprintf(os.Stderr, "%s\n\n", usageText)
 }
