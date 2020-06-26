@@ -10,7 +10,7 @@
   ```Shell
     $ go run main.go
     Thu, 13 Feb 2020 23:47:58 JST   : Local
-    Thu, 13 Feb 2020 14:47:58 GMT   : Europe/London
+    Thu, 13 Feb 2020 14:47:58 GMT   : Etc/GMT
   ```
 
 - i18n: World Timezone List
