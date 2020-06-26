@@ -63,7 +63,7 @@ func tz(x string) {
 		localtime()
 
 		// GMT(UTC)
-		loadlocation("Europe/London")
+		loadlocation("Etc/GMT")
 	case "i18n":
 		// i18n: json get
 		resp, err := http.Get(timejsonurl)
