@@ -1,7 +1,7 @@
 # i18n-time
 
 ## Whats is this...
-- Displays the current Local time & GMT(UTC) time. 
+- Displays the current Local time & UTC(GMT) time. 
 - World current time
 - Specified Timezone current time
 
@@ -10,7 +10,7 @@
   ```Shell
     $ go run main.go
     Thu, 13 Feb 2020 23:47:58 JST   : Local
-    Thu, 13 Feb 2020 14:47:58 GMT   : Europe/London
+    Thu, 13 Feb 2020 14:47:58 UTC   : Etc/UTC
   ```
 
 - i18n: World Timezone List
